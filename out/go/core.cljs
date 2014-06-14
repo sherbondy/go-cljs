@@ -58,11 +58,20 @@
 
 (turn-stone (:turn @game))
 
+(defn xy-to-index [x y]
+  (+ x (* board-size y)))
+
 (defn place-stone [board stone x y]
-  (assoc board (+ x (* board-size y)) stone))
+  (assoc board (xy-to-index x y) stone))
+
+(defn stone-at [board x y]
+  (nth board (xy-to-index x y)))
 
 (defn valid-move? [game x y]
-  true)
+  (let [board (current-board game)]
+    (and (= :empty (stone-at board x y))
+         ; the other rules are harder :P
+         true)))
 
 (def board-elem (.getElementById js/document "board"))
 
